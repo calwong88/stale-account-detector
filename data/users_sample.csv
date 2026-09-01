@@ -1,0 +1,9 @@
+upn,display_name,enabled,user_type,created,last_sign_in,license_count,manager_upn,guest_invite_pending
+active.user@contoso.com,Active User,True,Member,2024-01-15,2026-08-28,2,manager@contoso.com,False
+stale.user@contoso.com,Stale User,True,Member,2023-06-01,2026-02-10,3,manager@contoso.com,False
+never.signed@contoso.com,Never Signed,True,Member,2025-07-01,,2,manager@contoso.com,False
+disabled.licensed@contoso.com,Disabled Licensed,False,Member,2022-03-10,2025-11-20,5,manager@contoso.com,False
+no.manager@contoso.com,No Manager,True,Member,2024-09-01,2026-08-25,1,,False
+pending.guest@partner.com,Pending Guest,True,Guest,2026-05-01,,0,,True
+stale.guest@partner.com,Stale Guest,True,Guest,2024-02-01,2026-03-15,0,,False
+new.hire@contoso.com,New Hire,True,Member,2026-08-26,,2,manager@contoso.com,False
