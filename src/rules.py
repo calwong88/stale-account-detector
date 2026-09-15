@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional
 from src.models import Account, Finding, Severity
-from src.models import Account
 
 STALE_SIGNIN_DAYS = 90
 
@@ -23,5 +22,3 @@ def rule_stale_signin(account: Account, now: datetime) -> Optional[Finding]:
         severity=Severity.MEDIUM,
         detail=detail,
     )
-
-print(rule_stale_signin())
