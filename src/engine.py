@@ -1,6 +1,7 @@
 from datetime import datetime
-from src.rules import rule_stale_signin, rule_never_signed_in
+
 from src.models import Account, Finding
+from src.rules import rule_never_signed_in, rule_stale_signin
 
 ALL_RULES = [
     rule_stale_signin,

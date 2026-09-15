@@ -1,11 +1,11 @@
 from datetime import datetime
-from typing import Optional
+
 from src.models import Account, Finding, Severity
 
 STALE_SIGNIN_DAYS = 90
 NEVER_SIGNIN_GRACE_DAYS = 30
 
-def rule_stale_signin(account: Account, now: datetime) -> Optional[Finding]:
+def rule_stale_signin(account: Account, now: datetime) -> Finding | None:
     """
     IAM-001: Enabled account with no sign-in activity in more than 90 days.
     Severity: MEDIUM.
@@ -25,7 +25,7 @@ def rule_stale_signin(account: Account, now: datetime) -> Optional[Finding]:
 
     )
 
-def rule_never_signed_in(account: Account, now: datetime) -> Optional[Finding]:
+def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
     """
     IAM-002: Enabled account that has never been used since creation.
     """
