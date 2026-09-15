@@ -3,6 +3,7 @@ from typing import Optional
 from src.models import Account, Finding, Severity
 
 STALE_SIGNIN_DAYS = 90
+NEVER_SIGNIN_GRACE_DAYS = 30
 
 def rule_stale_signin(account: Account, now: datetime) -> Optional[Finding]:
     """
@@ -21,4 +22,25 @@ def rule_stale_signin(account: Account, now: datetime) -> Optional[Finding]:
         rule_id="IAM-001",
         severity=Severity.MEDIUM,
         detail=detail,
+
     )
+
+def rule_never_signed_in(account: Account, now: datetime) -> Optional[Finding]:
+    """
+    IAM-002: Enabled account that has never been used since creation.
+    """
+    if not account.enabled:
+        return None
+    days_since_creation = account.days_since_created(now)
+    if days_since_creation is None or days_since_creation <= NEVER_SIGNIN_GRACE_DAYS:
+        return None
+    if account.last_sign_in is not None:
+        return None
+    detail = f"Account has never signed in since creation {days_since_creation} days ago."
+    return Finding(
+        upn=account.upn,
+        rule_id="IAM-002",
+        severity=Severity.MEDIUM,
+        detail=detail,
+    )
+    
