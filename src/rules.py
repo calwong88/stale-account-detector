@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.models import Account, Finding, Severity
+from src.models import Account, Finding, Severity, UserType
 
 STALE_SIGNIN_DAYS = 90
 NEVER_SIGNIN_GRACE_DAYS = 30
@@ -58,3 +58,18 @@ def rule_disabled_with_license(account: Account, now: datetime) -> Finding | Non
             severity=Severity.LOW,
             detail=detail,
         ) 
+
+def rule_no_manager(account: Account, now: datetime) -> Finding | None:
+    """
+    IAM-004: Enabled member account with no manager assigned.
+    """
+    if not account.enabled:
+        return None
+    if account.user_type == UserType.MEMBER and account.manager_upn is None:
+        detail = "Enabled member account has no manager assigned."
+        return Finding(
+            upn=account.upn,
+            rule_id="IAM-004",
+            severity=Severity.LOW,
+            detail=detail,
+        )
