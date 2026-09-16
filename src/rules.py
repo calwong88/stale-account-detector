@@ -43,4 +43,18 @@ def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
         severity=Severity.MEDIUM,
         detail=detail,
     )
-    
+
+def rule_disabled_with_license(account: Account, now: datetime) -> Finding | None:
+    """
+    IAM-003: Disabled account still consuming a paid license.
+    """
+    if account.enabled:
+        return None
+    if account.enabled is not None and account.license_count > 0:
+        detail = f"Disabled account is still consuming {account.license_count} paid licenses."
+        return Finding(
+            upn=account.upn,
+            rule_id="IAM-003",
+            severity=Severity.LOW,
+            detail=detail,
+        ) 

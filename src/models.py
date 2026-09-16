@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 
 class Severity(Enum):
@@ -22,12 +21,12 @@ class Account:
     enabled: bool
     user_type: UserType
     created: datetime
-    last_sign_in: Optional[datetime]   # None means never signed in
+    last_sign_in: datetime | None   # None means never signed in
     license_count: int
-    manager_upn: Optional[str]
+    manager_upn: str | None
     guest_invite_pending: bool = False
 
-    def days_since_sign_in(self, now: datetime) -> Optional[int]:
+    def days_since_sign_in(self, now: datetime) -> int | None:
         if self.last_sign_in is None:
             return None
         return (now - self.last_sign_in).days

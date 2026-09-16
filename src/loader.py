@@ -1,22 +1,29 @@
 import csv
 from datetime import datetime
-from typing import Optional
+from zoneinfo import ZoneInfo
 
 from src.models import Account, UserType
+
+TZ = ZoneInfo("America/Toronto")
+
+
+def _parse_date(value: str) -> datetime:
+    """CSV dates have no offset, so anchor them to the tenant's local zone."""
+    return datetime.strptime(value.strip(), "%Y-%m-%d").replace(tzinfo=TZ)
 
 def _to_bool(value: str) -> bool:
     """Convert a CSV string like 'True'/'false' into a real bool."""
     return value.strip().lower() == "true"
 
 
-def _to_optional_str(value: str) -> Optional[str]:
+def _to_optional_str(value: str) -> str | None:
     """Blank cells become None, so Optional[str] means what it says."""
     return value.strip() if value.strip() else None
 
 
-def _to_optional_date(value: str) -> Optional[datetime]:
+def _to_optional_date(value: str) -> datetime | None:
     """Blank cells become None; otherwise parse YYYY-MM-DD."""
-    return datetime.strptime(value.strip(), "%Y-%m-%d") if value.strip() else None
+    return _parse_date(value) if value.strip() else None
 
 
 def load_accounts(path: str) -> list[Account]:
@@ -29,7 +36,7 @@ def load_accounts(path: str) -> list[Account]:
                 display_name=row["display_name"].strip(),
                 enabled=_to_bool(row["enabled"]),
                 user_type=UserType(row["user_type"].strip()),
-                created=datetime.strptime(row["created"].strip(), "%Y-%m-%d"),
+                created=_parse_date(row["created"]),
                 last_sign_in=_to_optional_date(row["last_sign_in"]),
                 license_count=int(row["license_count"]),
                 manager_upn=_to_optional_str(row["manager_upn"]),
