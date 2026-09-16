@@ -5,6 +5,7 @@ from src.rules import (
     rule_disabled_with_license,
     rule_never_signed_in,
     rule_no_manager,
+    rule_pending_guest_invite,
     rule_stale_signin,
 )
 
@@ -12,7 +13,8 @@ ALL_RULES = [
     rule_stale_signin,
     rule_never_signed_in,
     rule_disabled_with_license,
-    rule_no_manager
+    rule_no_manager,
+    rule_pending_guest_invite
 ]
 
 def run_all(accounts: list[Account], now: datetime) -> list[Finding]:

@@ -4,6 +4,7 @@ from src.models import Account, Finding, Severity, UserType
 
 STALE_SIGNIN_DAYS = 90
 NEVER_SIGNIN_GRACE_DAYS = 30
+PENDING_INVITE_DAYS = 14
 
 def rule_stale_signin(account: Account, now: datetime) -> Finding | None:
     """
@@ -22,7 +23,6 @@ def rule_stale_signin(account: Account, now: datetime) -> Finding | None:
         rule_id="IAM-001",
         severity=Severity.MEDIUM,
         detail=detail,
-
     )
 
 def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
@@ -31,10 +31,10 @@ def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
     """
     if not account.enabled:
         return None
-    days_since_creation = account.days_since_created(now)
-    if days_since_creation is None or days_since_creation <= NEVER_SIGNIN_GRACE_DAYS:
-        return None
     if account.last_sign_in is not None:
+        return None
+    days_since_creation = account.days_since_created(now)
+    if days_since_creation <= NEVER_SIGNIN_GRACE_DAYS:
         return None
     detail = f"Account has never signed in since creation {days_since_creation} days ago."
     return Finding(
@@ -73,3 +73,24 @@ def rule_no_manager(account: Account, now: datetime) -> Finding | None:
             severity=Severity.LOW,
             detail=detail,
         )
+
+def rule_pending_guest_invite(account: Account, now: datetime) -> Finding | None:
+    """
+    IAM-005: Guest invitation issued but never accepted.
+    """
+    if not account.enabled:
+        return None
+    if account.user_type != UserType.GUEST:
+        return None
+    if not account.guest_invite_pending:
+        return None
+    days_pending = account.days_since_created(now)
+    if days_pending <= PENDING_INVITE_DAYS:
+        return None
+    detail = f"Guest invitation is pending and has not been accepted for {days_pending} days."
+    return Finding(
+        upn=account.upn,
+        rule_id="IAM-005",
+        severity=Severity.LOW,
+        detail=detail,
+    )
