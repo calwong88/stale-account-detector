@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 scratch.py
 findings.csv
+test.csv
