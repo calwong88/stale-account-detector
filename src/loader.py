@@ -1,15 +1,12 @@
 import csv
 from datetime import datetime
-from zoneinfo import ZoneInfo
 
 from src.models import Account, UserType
 
-TZ = ZoneInfo("America/Toronto")
-
 
 def _parse_date(value: str) -> datetime:
-    """CSV dates have no offset, so anchor them to the tenant's local zone."""
-    return datetime.strptime(value.strip(), "%Y-%m-%d").replace(tzinfo=TZ)
+    """CSV dates are date-only, so parse them as naive datetimes."""
+    return datetime.strptime(value.strip(), "%Y-%m-%d")
 
 def _to_bool(value: str) -> bool:
     """Convert a CSV string like 'True'/'false' into a real bool."""
@@ -45,5 +42,3 @@ def load_accounts(path: str) -> list[Account]:
             accounts.append(account)
     return accounts
 
-if __name__ == "__main__":
-    print(load_accounts("data/users_sample.csv"))

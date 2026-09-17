@@ -1,0 +1,8 @@
+upn,rule_id,severity,detail
+never.signed@contoso.com,IAM-002,HIGH,Account has never signed in since creation 335 days ago.
+pending.guest@partner.com,IAM-002,HIGH,Account has never signed in since creation 31 days ago.
+stale.guest@partner.com,IAM-006,MEDIUM,Guest account has not signed in for 78 days.
+stale.user@contoso.com,IAM-001,MEDIUM,Account has not signed in for 111 days.
+disabled.licensed@contoso.com,IAM-003,LOW,Disabled account is still consuming 5 paid licenses.
+no.manager@contoso.com,IAM-004,LOW,Enabled member account has no manager assigned.
+pending.guest@partner.com,IAM-005,LOW,Guest invitation is pending and has not been accepted for 31 days.
