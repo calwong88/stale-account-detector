@@ -45,7 +45,7 @@ def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
     return Finding(
         upn=account.upn,
         rule_id="IAM-002",
-        severity=Severity.MEDIUM,
+        severity=Severity.HIGH,
         detail=detail,
     )
 
