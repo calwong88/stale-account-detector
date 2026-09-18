@@ -42,3 +42,5 @@ def load_accounts(path: str) -> list[Account]:
             accounts.append(account)
     return accounts
 
+# if __name__ == "__main__":
+#     print(load_accounts("data/users_sample.csv"))
