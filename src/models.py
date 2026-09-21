@@ -21,7 +21,7 @@ class Account:
     enabled: bool
     user_type: UserType
     created: datetime
-    last_sign_in: datetime | None   # None means never signed in
+    last_sign_in: datetime | None  # None means never signed in
     license_count: int
     manager_upn: str | None
     guest_invite_pending: bool = False

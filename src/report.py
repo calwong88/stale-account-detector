@@ -16,6 +16,7 @@ def write_csv(findings: list[Finding], path: str) -> None:
             row["severity"] = finding.severity.name
             writer.writerow(row)
 
+
 def print_summary(findings: list[Finding]) -> None:
     """Print a summary of the findings."""
     counts = Counter(f.severity for f in findings)
@@ -24,4 +25,3 @@ def print_summary(findings: list[Finding]) -> None:
     for severity in sorted(Severity, key=lambda s: -s.value):
         count = counts[severity]
         print(f"  {severity.name}: {count}")
-    

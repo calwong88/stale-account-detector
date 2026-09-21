@@ -41,7 +41,9 @@ def rule_never_signed_in(account: Account, now: datetime) -> Finding | None:
     days_since_creation = account.days_since_created(now)
     if days_since_creation <= NEVER_SIGNIN_GRACE_DAYS:
         return None
-    detail = f"Account has never signed in since creation {days_since_creation} days ago."
+    detail = (
+        f"Account has never signed in since creation {days_since_creation} days ago."
+    )
     return Finding(
         upn=account.upn,
         rule_id="IAM-002",
@@ -58,7 +60,9 @@ def rule_disabled_with_license(account: Account, now: datetime) -> Finding | Non
         return None
     if account.license_count <= 0:
         return None
-    detail = f"Disabled account is still consuming {account.license_count} paid licenses."
+    detail = (
+        f"Disabled account is still consuming {account.license_count} paid licenses."
+    )
     return Finding(
         upn=account.upn,
         rule_id="IAM-003",
@@ -126,4 +130,3 @@ def rule_stale_guest(account: Account, now: datetime) -> Finding | None:
         severity=Severity.MEDIUM,
         detail=detail,
     )
-

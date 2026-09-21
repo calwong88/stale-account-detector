@@ -8,6 +8,7 @@ def _parse_date(value: str) -> datetime:
     """CSV dates are date-only, so parse them as naive datetimes."""
     return datetime.strptime(value.strip(), "%Y-%m-%d")
 
+
 def _to_bool(value: str) -> bool:
     """Convert a CSV string like 'True'/'false' into a real bool."""
     return value.strip().lower() == "true"
@@ -41,6 +42,7 @@ def load_accounts(path: str) -> list[Account]:
             )
             accounts.append(account)
     return accounts
+
 
 # if __name__ == "__main__":
 #     print(load_accounts("data/users_sample.csv"))

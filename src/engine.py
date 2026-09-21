@@ -16,8 +16,9 @@ ALL_RULES = [
     rule_disabled_with_license,
     rule_no_manager,
     rule_pending_guest_invite,
-    rule_stale_guest
+    rule_stale_guest,
 ]
+
 
 def run_all(accounts: list[Account], now: datetime) -> list[Finding]:
     findings = []

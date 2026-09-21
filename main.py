@@ -7,7 +7,9 @@ from src.report import print_summary, write_csv
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Detect stale, orphaned, and over-licensed accounts in a directory export.")
+    parser = argparse.ArgumentParser(
+        description="Detect stale, orphaned, and over-licensed accounts in a directory export."
+    )
     parser.add_argument("--input", default="data/users_sample.csv")
     parser.add_argument("--output", default="findiwngs.csv")
     parser.add_argument("--as-of", default=None)
