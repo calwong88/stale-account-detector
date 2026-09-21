@@ -30,7 +30,7 @@ def make_account(**overrides) -> Account:
 
 
 def test_stale_signin_flags_inactive_member():
-    account = make_account(last_sign_in=datetime(2026, 1, 1))
+    account = make_account(last_sign_in=NOW - timedelta(days=262))
     finding = rule_stale_signin(account, NOW)
     assert finding is not None
     assert finding.rule_id == "IAM-001"
@@ -38,6 +38,15 @@ def test_stale_signin_flags_inactive_member():
 
 def test_stale_signin_does_not_flag_at_exactly_90_days():
     account = make_account(last_sign_in=NOW - timedelta(days=90))
+    finding = rule_stale_signin(account, NOW)
+    assert finding is None
+
+
+def test_stale_signin_does_not_flag_guest():
+    account = make_account(
+        user_type=UserType.GUEST,
+        last_sign_in=NOW - timedelta(days=100),
+    )
     finding = rule_stale_signin(account, NOW)
     assert finding is None
 
@@ -80,14 +89,14 @@ def test_disabled_with_license_does_not_flag_enabled_account():
     assert finding is None
 
 
-def test_no_manager_does_not_flag_guest():
+def test_no_manager_flags_member_without_manager():
     account = make_account(manager_upn=None)
     finding = rule_no_manager(account, NOW)
     assert finding is not None
     assert finding.rule_id == "IAM-004"
 
 
-def test_no_manager_flagging_guest_accounts_with_no_manager():
+def test_no_manager_does_not_flag_guest():
     account = make_account(user_type=UserType.GUEST, manager_upn=None)
     finding = rule_no_manager(account, NOW)
     assert finding is None
@@ -114,7 +123,7 @@ def test_pending_guest_invite_does_not_flag_within_threshold():
     assert finding is None
 
 
-def test_stale_guest_flag_inactive_guest():
+def test_stale_guest_flags_inactive_guest():
     account = make_account(
         user_type=UserType.GUEST, last_sign_in=NOW - timedelta(days=100)
     )
@@ -130,10 +139,3 @@ def test_stale_guest_does_not_flag_member_user():
     finding = rule_stale_guest(account, NOW)
     assert finding is None
 
-
-def test_stale_signin_does_not_flag_guest():
-    account = make_account(
-        user_type=UserType.GUEST,
-        last_sign_in=NOW - timedelta(days=100),
-    )
-    assert rule_stale_signin(account, NOW) is None
