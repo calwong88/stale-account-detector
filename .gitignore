@@ -4,3 +4,5 @@ __pycache__/
 scratch.py
 findings.csv
 test.csv
+.pytest_cache/
+.ruff_cache/
